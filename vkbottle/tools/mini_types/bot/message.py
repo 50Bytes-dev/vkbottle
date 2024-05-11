@@ -95,4 +95,4 @@ def message_min(event: dict, ctx_api: "ABCAPI", replace_mention: bool = True) ->
     )
 
 
-MessageMin.update_forward_refs()
+MessageMin.model_rebuild()

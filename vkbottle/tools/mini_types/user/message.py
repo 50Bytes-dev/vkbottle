@@ -34,7 +34,7 @@ class MessageMin(BaseMessageMin):
         return values
 
 
-MessageMin.update_forward_refs()
+MessageMin.model_rebuild()
 
 
 async def message_min(

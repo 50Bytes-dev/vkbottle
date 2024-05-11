@@ -42,7 +42,7 @@ class MessageEventMin(MessageEvent):
             "event_id": self.event_id,
             "user_id": self.user_id,
             "peer_id": self.peer_id,
-            "event_data": event_data.json(),
+            "event_data": event_data.model_dump_json(),
         }
         data.update(kwargs)
         return (await self.ctx_api.request("messages.sendMessageEventAnswer", data))["response"]
@@ -129,4 +129,4 @@ class MessageEventMin(MessageEvent):
         return self.payload
 
 
-MessageEventMin.update_forward_refs()
+MessageEventMin.model_rebuild()

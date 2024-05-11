@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Union
 
-from pydantic import root_validator
+from pydantic import ConfigDict, model_validator
 from vkbottle_types.objects import (
     AudioAudio,
     DocsDoc,
@@ -23,14 +23,16 @@ from .mention import Mention, replace_mention_validator
 
 
 class BaseForeignMessageMin(MessagesForeignMessage, ABC):
+    model_config = ConfigDict(frozen=False)
+
     unprepared_ctx_api: Optional[Any] = None
     replace_mention: Optional[bool] = None
     _mention: Optional[Mention] = None
 
-    __replace_mention = root_validator(replace_mention_validator, allow_reuse=True, pre=False)  # type: ignore
-
-    class Config:
-        frozen = False
+    @model_validator(mode="before")
+    @classmethod
+    def validate_mention(cls, values):
+        return replace_mention_validator(cls=cls, values=values)
 
     @property
     def ctx_api(self) -> Union["ABCAPI", "API"]:
@@ -143,4 +145,4 @@ class BaseForeignMessageMin(MessagesForeignMessage, ABC):
         return unpack_failure(self.payload)
 
 
-BaseForeignMessageMin.update_forward_refs()
+BaseForeignMessageMin.model_rebuild()
