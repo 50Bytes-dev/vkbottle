@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import root_validator
+from pydantic import model_validator
 from vkbottle_types.events.bot_events import MessageNew
 
 from vkbottle.tools.mini_types.base import BaseMessageMin
@@ -23,7 +23,8 @@ class MessageMin(BaseMessageMin):
     fwd_messages: Optional[List["ForeignMessageMin"]] = []
     _is_full: Optional[bool] = None
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def __foreign_messages(cls, values):
         foreign_messages = []
         if values.get("fwd_messages"):

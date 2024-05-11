@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import root_validator
+from pydantic import model_validator
 
 from vkbottle.tools.mini_types.base import BaseMessageMin
 
@@ -20,7 +20,8 @@ class MessageMin(BaseMessageMin):
     def is_mentioned(self) -> bool:
         return self.mention.id == self.user_id if self.mention else False
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def __foreign_messages(cls, values):
         foreign_messages = []
         if values.get("fwd_messages"):
