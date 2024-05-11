@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
 
-from aiohttp import ClientSession
+from aiohttp import ClientSession, TCPConnector
 
 from vkbottle.modules import json as json_module
 
@@ -18,6 +18,7 @@ class AiohttpClient(ABCHTTPClient):
         session: Optional[ClientSession] = None,
         json_processing_module: Optional[Any] = None,
         optimize: bool = False,
+        limit: Optional[int] = None,
         **session_params,
     ):
         self.json_processing_module = (
@@ -32,6 +33,8 @@ class AiohttpClient(ABCHTTPClient):
 
         self._session_params = session_params
 
+        self.connector = TCPConnector(limit=limit)
+
     async def request_raw(
         self,
         url: str,
@@ -42,6 +45,7 @@ class AiohttpClient(ABCHTTPClient):
         if not self.session:
             self.session = ClientSession(
                 json_serialize=self.json_processing_module.dumps,
+                connector=self.connector,
                 **self._session_params,
             )
         async with self.session.request(url=url, method=method, data=data, **kwargs) as response:

@@ -83,7 +83,7 @@ asyncio_mode = "auto"
 
 
 [tool.mypy]
-python_version = 3.8
+python_version = "3.8"
 ignore_missing_imports = true
 warn_no_return = false
 warn_return_any = false
