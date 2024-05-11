@@ -1727,8 +1727,8 @@ vkbottle = "*"
 [package.source]
 type = "git"
 url = "https://github.com/50Bytes-dev/types.git"
-reference = "191576f"
-resolved_reference = "191576fc015654da35973c7ac4492d6a7833dc61"
+reference = "1b47a11"
+resolved_reference = "1b47a113f47499206e6cc76e7de451b21cc46e1c"
 
 [[package]]
 name = "watchdog"
@@ -1892,4 +1892,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "0d5e9ea0b10448c528cf83d8491fd48ead38336a8047dd405d69e9a7ab880b28"
+content-hash = "b9ce56cdbfefb7627fc3a1b35e6ac32a1e2dccec4760f549bb5055452abb5650"
