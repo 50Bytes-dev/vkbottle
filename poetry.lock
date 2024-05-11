@@ -1715,18 +1715,20 @@ description = "Types for vkbottle"
 optional = false
 python-versions = ">=3.8,<3.12"
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 dataclass-factory = "^2.16"
 jinja2 = "^3.1.2"
 pydantic = "^2.7.1"
 tqdm = "^4.65.0"
-vkbottle = {path = "../vkbottle", develop = true}
+vkbottle = "*"
 
 [package.source]
-type = "directory"
-url = "../types"
+type = "git"
+url = "https://github.com/50Bytes-dev/types.git"
+reference = "191576f"
+resolved_reference = "191576fc015654da35973c7ac4492d6a7833dc61"
 
 [[package]]
 name = "watchdog"
@@ -1890,4 +1892,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "ae5565c651c97806918c0cbf8abd478a5197e3c1c520e93f331af55245a57789"
+content-hash = "0d5e9ea0b10448c528cf83d8491fd48ead38336a8047dd405d69e9a7ab880b28"
