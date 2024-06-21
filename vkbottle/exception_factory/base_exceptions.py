@@ -33,7 +33,7 @@ class CaptchaError(VKAPIError, code=14):
         **kwargs,
     ):
         super().__init__(**kwargs)
-        self.captcha_sid = int(captcha_sid)
+        self.captcha_sid = captcha_sid
         self.captcha_img = captcha_img
         self.captcha_ts = captcha_ts
         self.captcha_attempt = captcha_attempt
