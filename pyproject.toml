@@ -44,7 +44,7 @@ aiohttp = "^3.8.1"
 choicelib = "^0.1.5"
 pydantic = "^2.7.1"
 vbml = "^1.1.post1"
-vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "9335591" }
+vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "c64f361" }
 aiofiles = "23.1.0"
 typing-extensions = "^4.4.0"
 colorama = "^0.4.6"
@@ -106,55 +106,55 @@ line-length = 99
 respect-gitignore = true
 target-version = "py38"
 select = [
-  "PL",    # pylint
-  "F",     # pyflakes
-  "E",     # pycodestyle errors
-  "W",     # pycodestyle warnings
-  "C90",   # mccabe
-  "I",     # isort
-  "N",     # pep8-naming
-  "YTT",   # flake8-2020
-  "S",     # flake8-bandit
-  "B",     # flake8-bugbear
-  "A",     # flake8-builtins
-  "C40",   # flake8-comprehensions
-  "T10",   # flake8-debugger
-  "EXE",   # flake8-executable
-  "ISC",   # flake8-implicit-str-concat
-  "ICN",   # flake8-import-conventions
-  "G",     # flake8-logging-format
-  "PIE",   # flake8-pie
-  "T20",   # flake8-print
-  "PT",    # flake8-pytest-style
-  "SIM",   # flake8-simplify
-  "TID",   # flake8-tidy-imports
-  "TCH",   # flake8-type-checking
-  "ARG",   # flake8-unused-arguments
-  "PGH",   # pygrep-hooks
-  "RSE",   # flake8-raise
-  "RUF",   # ruff
-  "ALL",   # All not listed above
+  "PL",  # pylint
+  "F",   # pyflakes
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "C90", # mccabe
+  "I",   # isort
+  "N",   # pep8-naming
+  "YTT", # flake8-2020
+  "S",   # flake8-bandit
+  "B",   # flake8-bugbear
+  "A",   # flake8-builtins
+  "C40", # flake8-comprehensions
+  "T10", # flake8-debugger
+  "EXE", # flake8-executable
+  "ISC", # flake8-implicit-str-concat
+  "ICN", # flake8-import-conventions
+  "G",   # flake8-logging-format
+  "PIE", # flake8-pie
+  "T20", # flake8-print
+  "PT",  # flake8-pytest-style
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "TCH", # flake8-type-checking
+  "ARG", # flake8-unused-arguments
+  "PGH", # pygrep-hooks
+  "RSE", # flake8-raise
+  "RUF", # ruff
+  "ALL", # All not listed above
 ]
 ignore = [
-  "ANN",    # flake8-annotations
-  "BLE",    # flake8-blind-except
-  "FBT",    # flake8-boolean-trap
-  "COM",    # flake8-commas
-  "DTZ",    # flake8-datetimez
-  "DJ",     # flake8-Django
-  "EM",     # flake8-errmsg
-  "INP",    # flake8-no-pep420
-  "PYI",    # flake8-pyi
-  "Q",      # flake8-quotes
-  "RET",    # flake8-return
-  "PTH",    # flake8-use-pathlib
-  "ERA",    # flake8-eradicate
-  "PD",     # pandas-vet
-  "D",      # pydocstyle
-  "TRY",    # tryceratops
-  "SLF",    # flake8-self
+  "ANN", # flake8-annotations
+  "BLE", # flake8-blind-except
+  "FBT", # flake8-boolean-trap
+  "COM", # flake8-commas
+  "DTZ", # flake8-datetimez
+  "DJ",  # flake8-Django
+  "EM",  # flake8-errmsg
+  "INP", # flake8-no-pep420
+  "PYI", # flake8-pyi
+  "Q",   # flake8-quotes
+  "RET", # flake8-return
+  "PTH", # flake8-use-pathlib
+  "ERA", # flake8-eradicate
+  "PD",  # pandas-vet
+  "D",   # pydocstyle
+  "TRY", # tryceratops
+  "SLF", # flake8-self
   # "E203",  # whitespace before ':' (black)
-  "E501",    # line too long
+  "E501", # line too long
   # "W503",  # line break before binary operator (black)
   # "W504",  # line break after binary operator (black)
   "B905",    # `zip()` without an explicit `strict=` parameter (python3.10+ only)
@@ -184,14 +184,18 @@ ignore = [
   "ARG005",  # Unused lambda argument
 ]
 "examples/**.py" = [
-  "T201",    # print statement found
-  "TCH001",  # Move application import into a type-checking block
-  "TCH002"   # Move third-party import out of a type-checking block
+  "T201",   # print statement found
+  "TCH001", # Move application import into a type-checking block
+  "TCH002", # Move third-party import out of a type-checking block
 ]
 
 [tool.ruff.pep8-naming]
 # Allow Pydantic's `@validator` decorator to trigger class method treatment.
-classmethod-decorators = ["classmethod", "pydantic.validator", "pydantic.root_validator"]
+classmethod-decorators = [
+  "classmethod",
+  "pydantic.validator",
+  "pydantic.root_validator",
+]
 
 [tool.ruff.flake8-type-checking]
 exempt-modules = ["typing_extensions", "typing"]
