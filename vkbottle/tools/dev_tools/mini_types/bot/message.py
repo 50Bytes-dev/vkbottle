@@ -1,7 +1,7 @@
 from typing import Any, List, Optional, Union
 
 from vkbottle_types import StatePeer
-from vkbottle_types.events.bot_events import MessageNew
+from vkbottle_types.events.bot_events import BaseGroupEvent, BaseEventObject
 from vkbottle_types.objects import BaseObject, MessagesMessage, UsersUser
 
 from vkbottle.api import ABCAPI, API
@@ -13,6 +13,15 @@ class MessagesClientInfo(BaseObject):
     inline_keyboard: Optional[bool] = None
     carousel: Optional[bool] = None
     lang_id: Optional[int] = None
+
+
+class MessageNewObject(BaseEventObject):
+    message: Optional[MessagesMessage] = None
+    client_info: Optional[MessagesClientInfo] = None
+
+
+class MessageNew(BaseGroupEvent):
+    object: "MessageNewObject"
 
 
 class MessageMin(MessagesMessage):
