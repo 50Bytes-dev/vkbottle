@@ -2,9 +2,17 @@ from typing import Any, List, Optional, Union
 
 from vkbottle_types import StatePeer
 from vkbottle_types.events.bot_events import MessageNew
-from vkbottle_types.objects import MessagesClientInfo, MessagesMessage, UsersUser
+from vkbottle_types.objects import BaseObject, MessagesMessage, UsersUser
 
 from vkbottle.api import ABCAPI, API
+    
+
+class MessagesClientInfo(BaseObject):
+    button_actions: Optional[List[str]] = None
+    keyboard: Optional[bool] = None
+    inline_keyboard: Optional[bool] = None
+    carousel: Optional[bool] = None
+    lang_id: Optional[int] = None
 
 
 class MessageMin(MessagesMessage):
