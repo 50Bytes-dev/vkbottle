@@ -38,7 +38,7 @@ python = ">=3.9,<3.10"
 aiohttp = "^3.6.2"
 vbml = "^1.0"
 choicelib = "^0.1.1"
-vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "40f27ecdd2d02e4702f80cbc6f78f6a703267259" }
+vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "153baeb207ac00f70edfed389f817b774e828c3b" }
 watchgod = "^0.7"
 pydantic = "^1.8.2"
 
