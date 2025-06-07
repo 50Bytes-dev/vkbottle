@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vkbottle"
-version = "4.4.0-dev1"
+version = "5.0.0"
 description = "Homogenic! Customizable asynchronous VK API framework implementing comfort and speed"
 authors = ["timoniq"]
 maintainers = ["FeeeeK"]
@@ -44,7 +44,7 @@ aiohttp = "^3.8.1"
 choicelib = "^0.1.5"
 pydantic = "^2.7.1"
 vbml = "^1.1.post1"
-vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "a042ffc6f3b0317a748bd236411bf1b9028ca855" }
+vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "a1ac7c90581bcd9266993682fcc8521db451dd4b" }
 aiofiles = "23.1.0"
 typing-extensions = "^4.4.0"
 colorama = "^0.4.6"
