@@ -42,7 +42,7 @@ classifiers = [
 python = ">=3.8,<3.12"
 aiohttp = "^3.8.1"
 choicelib = "^0.1.5"
-pydantic = "^2.7.1"
+pydantic = "^2.5.3"
 vbml = "^1.1.post1"
 vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "bfe40c3f9f5f7778412bea29df546a02e45195cc" }
 aiofiles = "23.1.0"
