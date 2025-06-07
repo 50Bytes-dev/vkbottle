@@ -44,7 +44,7 @@ aiohttp = "^3.8.1"
 choicelib = "^0.1.5"
 pydantic = "^2.7.1"
 vbml = "^1.1.post1"
-vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "8fae25f968d2489f5bda49bc4ddfdbc9e80d22f6" }
+vkbottle-types = { git = "https://github.com/50Bytes-dev/types.git", rev = "a042ffc6f3b0317a748bd236411bf1b9028ca855" }
 aiofiles = "23.1.0"
 typing-extensions = "^4.4.0"
 colorama = "^0.4.6"
