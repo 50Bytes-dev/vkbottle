@@ -162,7 +162,16 @@ async def test_bot_scopes():
 
 
 def fake_message(ctx_api: API, **data: Any) -> Message:
-    message = {"peer_id": 1, "date": 1, "from_id": 1, "text": "test", "out": 0, "id": 1}
+    message = {
+        "peer_id": 1,
+        "date": 1,
+        "from_id": 1,
+        "text": "test",
+        "out": 0,
+        "id": 1,
+        "conversation_message_id": 1,
+        "version": 1,
+    }
     message.update(data)
     return message_min(
         {
@@ -199,7 +208,10 @@ async def test_rules(api: API):
         fake_message(api, payload=json.dumps({"a": 1, "b": {"c": "", "d": {}}}))
     )
     assert await base.StickerRule(sticker_ids=[1, 2]).check(
-        fake_message(api, attachments=[{"type": "sticker", "sticker": {"sticker_id": 2}}])
+        fake_message(
+            api,
+            attachments=[{"type": "sticker", "sticker": {"sticker_id": 2, "inner_type": "base"}}],
+        )
     )
 
     assert (

@@ -2036,8 +2036,8 @@ typing-extensions = ">=4.4.0,<5.0.0"
 [package.source]
 type = "git"
 url = "https://github.com/50Bytes-dev/types.git"
-reference = "b74c0109faaf8f09d5ee79fff581f5a796375735"
-resolved_reference = "b74c0109faaf8f09d5ee79fff581f5a796375735"
+reference = "66a03354ed7a4dcaea8098b08d941812abc78089"
+resolved_reference = "66a03354ed7a4dcaea8098b08d941812abc78089"
 
 [[package]]
 name = "watchdog"
@@ -2224,4 +2224,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "d0ef4b902832130fdf7552b159b0fb53c3ff212535b78b68192d881377eb5974"
+content-hash = "75b8c002da0ddaca7b4a7896b6f7680f99807e16938e9f62629a18d749843860"

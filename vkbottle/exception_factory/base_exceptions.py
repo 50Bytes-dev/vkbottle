@@ -39,14 +39,14 @@ class CaptchaError(VKAPIError, code=14):
         *,
         captcha_sid: str,
         captcha_img: str,
-        captcha_ts: str,
-        captcha_attempt: int,
-        redirect_uri: str,
+        captcha_ts: Optional[str] = None,
+        captcha_attempt: Optional[int] = None,
+        redirect_uri: Optional[str] = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
         self.redirect_uri = redirect_uri
-        self.captcha_sid = captcha_sid
+        self.captcha_sid = int(captcha_sid)
         self.captcha_img = captcha_img
         self.captcha_ts = captcha_ts
         self.captcha_attempt = captcha_attempt
