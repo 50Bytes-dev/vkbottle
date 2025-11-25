@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, NoReturn, Union
 
 from vkbottle.exception_factory import CaptchaError, VKAPIError
+from vkbottle.exception_factory.base_exceptions import ValidationError
 from vkbottle.modules import logger
 
 from .abc import ABCResponseValidator
@@ -23,7 +24,9 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
     ) -> Union[Any, NoReturn]:
         if "error" not in response:
             if "response" not in response:
-                request_params = [{"key": key, "value": value} for key, value in data.items()]
+                request_params = [
+                    {"key": key, "value": value} for key, value in data.items()
+                ]
                 raise VKAPIError[1](
                     error_msg=f"Unknown response from {method}: {response}",
                     request_params=request_params,
@@ -31,13 +34,22 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
             if isinstance(response["response"], list) and any(
                 "error" in item for item in response["response"]
             ):
-                logger.info("API error(s) in response wasn't handled: {}", response["response"])
+                logger.info(
+                    "API error(s) in response wasn't handled: {}", response["response"]
+                )
             return response
 
         if ctx_api.ignore_errors:
             return None
         error = response["error"]
         code = error.pop("error_code")
+
+        if VKAPIError[code] is ValidationError and ctx_api.validation_handler:
+            await ctx_api.validation_handler(ValidationError(**error))
+            return await ctx_api.request(
+                method,
+                {**data},
+            )
 
         if VKAPIError[code] is CaptchaError and ctx_api.captcha_handler:
             key = await ctx_api.captcha_handler(CaptchaError(**error))  # type: ignore

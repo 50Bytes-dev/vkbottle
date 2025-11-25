@@ -22,15 +22,26 @@ class VKAPIError(CodeException, ReducibleKwargsException):
         return self.error_msg
 
 
+class ValidationError(VKAPIError, code=17):
+    def __init__(
+        self,
+        *,
+        redirect_uri: str,
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.redirect_uri = redirect_uri
+
+
 class CaptchaError(VKAPIError, code=14):
     def __init__(
         self,
         *,
         captcha_sid: str,
         captcha_img: str,
-        redirect_uri: Optional[str] = None,
-        captcha_ts: Optional[str] = None,
-        captcha_attempt: Optional[int] = None,
+        captcha_ts: str,
+        captcha_attempt: int,
+        redirect_uri: str,
         **kwargs,
     ):
         super().__init__(**kwargs)

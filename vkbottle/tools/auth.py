@@ -73,7 +73,9 @@ class UserAuth:
         response["error_msg"] = response.pop("error")
         if response["error_msg"] == "need_captcha":
             if self.captcha_handler:
-                key = await self.captcha_handler(CaptchaError(**response, request_params=[]))
+                key = await self.captcha_handler(
+                    CaptchaError(**response, request_params=[])
+                )
                 return await self.get_token(
                     login,
                     password,

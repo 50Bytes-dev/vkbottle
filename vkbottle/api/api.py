@@ -11,6 +11,7 @@ from typing import (
     Union,
 )
 
+from vkbottle.exception_factory.base_exceptions import ValidationError
 import vkbottle_types
 
 from vkbottle.exception_factory import CaptchaError
@@ -33,6 +34,7 @@ if TYPE_CHECKING:
 
 
 CaptchaHandler = typing.Callable[[CaptchaError], typing.Awaitable]
+ValidationHandler = typing.Callable[[ValidationError], typing.Awaitable]
 
 
 class APIRequest(NamedTuple):
@@ -63,6 +65,7 @@ class API(ABCAPI):
         self.response_validators: List["ABCResponseValidator"] = DEFAULT_RESPONSE_VALIDATORS
         self.request_validators: List["ABCRequestValidator"] = DEFAULT_REQUEST_VALIDATORS  # type: ignore
         self.captcha_handler: Optional["CaptchaHandler"] = None
+        self.validation_handler: Optional["ValidationHandler"] = None
 
     async def request(self, method: str, data: dict) -> dict:
         """Makes a single request opening a session"""
@@ -79,7 +82,8 @@ class API(ABCAPI):
         return await self.validate_response(method, data, response)  # type: ignore
 
     async def request_many(
-        self, requests: Iterable[APIRequest]  # type: ignore
+        self,
+        requests: Iterable[APIRequest],  # type: ignore
     ) -> AsyncIterator[dict]:
         """Makes many requests opening one session"""
         for request in requests:
@@ -114,6 +118,10 @@ class API(ABCAPI):
 
     def add_captcha_handler(self, handler: CaptchaHandler) -> CaptchaHandler:
         self.captcha_handler = handler
+        return handler
+
+    def add_validation_handler(self, handler: ValidationHandler) -> ValidationHandler:
+        self.validation_handler = handler
         return handler
 
     def __repr__(self) -> str:
