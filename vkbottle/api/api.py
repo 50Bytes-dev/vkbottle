@@ -57,7 +57,7 @@ class API(ABCAPI):
         ignore_errors: bool = False,
         http_client: Optional["ABCHTTPClient"] = None,
         request_rescheduler: Optional["ABCRequestRescheduler"] = None,
-        proxies: Optional[List[str]] = None,
+        proxy: Optional[Union[str, List[str]]] = None,
     ):
         self.token_generator = get_token_generator(token)
         self.ignore_errors = ignore_errors
@@ -67,16 +67,16 @@ class API(ABCAPI):
         self.request_validators: List["ABCRequestValidator"] = DEFAULT_REQUEST_VALIDATORS  # type: ignore
         self.captcha_handler: Optional["CaptchaHandler"] = None
         self.validation_handler: Optional["ValidationHandler"] = None
-        self.proxies = proxies or []
+        self.proxy: List[str] = [proxy] if isinstance(proxy, str) else (proxy or [])
         self._proxy_index = 0
         self._current_proxy: Optional[str] = None
 
     def _get_next_proxy(self) -> Optional[str]:
         """Get the next proxy from the list using round-robin rotation."""
-        if not self.proxies:
+        if not self.proxy:
             return None
-        proxy = self.proxies[self._proxy_index]
-        self._proxy_index = (self._proxy_index + 1) % len(self.proxies)
+        proxy = self.proxy[self._proxy_index]
+        self._proxy_index = (self._proxy_index + 1) % len(self.proxy)
         return proxy
 
     async def request(self, method: str, data: dict) -> dict:
