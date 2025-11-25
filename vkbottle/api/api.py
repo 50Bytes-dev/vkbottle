@@ -79,10 +79,11 @@ class API(ABCAPI):
         self._proxy_index = (self._proxy_index + 1) % len(self.proxy)
         return proxy
 
-    async def request(self, method: str, data: dict) -> dict:
+    async def request(self, method: str, data: dict, _keep_current_proxy: bool = False) -> dict:
         """Makes a single request opening a session"""
         data = await self.validate_request(data)
-        self._current_proxy = self._get_next_proxy()
+        if not _keep_current_proxy:
+            self._current_proxy = self._get_next_proxy()
 
         async with self.token_generator as token:
             request_kwargs: dict = {

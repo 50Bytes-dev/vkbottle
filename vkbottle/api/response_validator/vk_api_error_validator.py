@@ -50,6 +50,7 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
             return await ctx_api.request(
                 method,
                 {**data},
+                _keep_current_proxy=True,
             )
 
         if VKAPIError[code] is CaptchaError and ctx_api.captcha_handler:
@@ -58,6 +59,7 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
             return await ctx_api.request(
                 method,
                 {**data, "captcha_sid": error["captcha_sid"], "captcha_key": key},
+                _keep_current_proxy=True,
             )
 
         raise VKAPIError[code](**error)
