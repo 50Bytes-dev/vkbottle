@@ -18,10 +18,12 @@ class AuthError(VKAPIError[0]):  # type: ignore
         error_description: str,
         error_type: str,
         error_msg: str,
+        view: Optional[str] = None,
         request_params: Optional[List[dict]] = None,
     ):
         request_params = request_params or []
         super().__init__(error_msg=error_msg, request_params=request_params)
+        self.view = view
         self.error_msg = error_msg
         self.error_type = error_type
         self.error_description = error_description
