@@ -28,11 +28,13 @@ class CaptchaError(VKAPIError, code=14):
         *,
         captcha_sid: str,
         captcha_img: str,
+        redirect_uri: Optional[str] = None,
         captcha_ts: Optional[str] = None,
         captcha_attempt: Optional[int] = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
+        self.redirect_uri = redirect_uri
         self.captcha_sid = captcha_sid
         self.captcha_img = captcha_img
         self.captcha_ts = captcha_ts
