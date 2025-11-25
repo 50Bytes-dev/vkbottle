@@ -45,14 +45,16 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
         code = error.pop("error_code")
 
         if VKAPIError[code] is ValidationError and ctx_api.validation_handler:
-            await ctx_api.validation_handler(ValidationError(**error))
+            current_proxy = getattr(ctx_api, "_current_proxy", None)
+            await ctx_api.validation_handler(ValidationError(**error), current_proxy)
             return await ctx_api.request(
                 method,
                 {**data},
             )
 
         if VKAPIError[code] is CaptchaError and ctx_api.captcha_handler:
-            key = await ctx_api.captcha_handler(CaptchaError(**error))  # type: ignore
+            current_proxy = getattr(ctx_api, "_current_proxy", None)
+            key = await ctx_api.captcha_handler(CaptchaError(**error), current_proxy)  # type: ignore
             return await ctx_api.request(
                 method,
                 {**data, "captcha_sid": error["captcha_sid"], "captcha_key": key},

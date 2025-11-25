@@ -11,10 +11,10 @@ from typing import (
     Union,
 )
 
-from vkbottle.exception_factory.base_exceptions import ValidationError
 import vkbottle_types
 
 from vkbottle.exception_factory import CaptchaError
+from vkbottle.exception_factory.base_exceptions import ValidationError
 from vkbottle.http import SingleAiohttpClient
 from vkbottle.modules import logger
 
@@ -33,8 +33,8 @@ if TYPE_CHECKING:
     from .token_generator import Token
 
 
-CaptchaHandler = typing.Callable[[CaptchaError], typing.Awaitable]
-ValidationHandler = typing.Callable[[ValidationError], typing.Awaitable]
+CaptchaHandler = typing.Callable[[CaptchaError, Optional[str]], typing.Awaitable]
+ValidationHandler = typing.Callable[[ValidationError, Optional[str]], typing.Awaitable]
 
 
 class APIRequest(NamedTuple):
@@ -57,6 +57,7 @@ class API(ABCAPI):
         ignore_errors: bool = False,
         http_client: Optional["ABCHTTPClient"] = None,
         request_rescheduler: Optional["ABCRequestRescheduler"] = None,
+        proxies: Optional[List[str]] = None,
     ):
         self.token_generator = get_token_generator(token)
         self.ignore_errors = ignore_errors
@@ -66,19 +67,37 @@ class API(ABCAPI):
         self.request_validators: List["ABCRequestValidator"] = DEFAULT_REQUEST_VALIDATORS  # type: ignore
         self.captcha_handler: Optional["CaptchaHandler"] = None
         self.validation_handler: Optional["ValidationHandler"] = None
+        self.proxies = proxies or []
+        self._proxy_index = 0
+        self._current_proxy: Optional[str] = None
+
+    def _get_next_proxy(self) -> Optional[str]:
+        """Get the next proxy from the list using round-robin rotation."""
+        if not self.proxies:
+            return None
+        proxy = self.proxies[self._proxy_index]
+        self._proxy_index = (self._proxy_index + 1) % len(self.proxies)
+        return proxy
 
     async def request(self, method: str, data: dict) -> dict:
         """Makes a single request opening a session"""
         data = await self.validate_request(data)
+        self._current_proxy = self._get_next_proxy()
 
         async with self.token_generator as token:
+            request_kwargs: dict = {
+                "method": "POST",
+                "data": data,
+                "params": {"access_token": token, "v": self.API_VERSION},
+            }
+            if self._current_proxy:
+                request_kwargs["proxy"] = self._current_proxy
+
             response = await self.http_client.request_text(
                 self.API_URL + method,
-                method="POST",
-                data=data,  # type: ignore
-                params={"access_token": token, "v": self.API_VERSION},
+                **request_kwargs,
             )
-        logger.debug("Request {} with {} data returned {}", method, data, response)
+        logger.debug("Request {} with {} data returned {} (proxy: {})", method, data, response, self._current_proxy)
         return await self.validate_response(method, data, response)  # type: ignore
 
     async def request_many(
@@ -88,14 +107,22 @@ class API(ABCAPI):
         """Makes many requests opening one session"""
         for request in requests:
             method, data = request.method, await self.validate_request(request.data)  # type: ignore
+            self._current_proxy = self._get_next_proxy()
+
             async with self.token_generator as token:
+                request_kwargs: dict = {
+                    "method": "POST",
+                    "data": data,
+                    "params": {"access_token": token, "v": self.API_VERSION},
+                }
+                if self._current_proxy:
+                    request_kwargs["proxy"] = self._current_proxy
+
                 response = await self.http_client.request_json(
                     self.API_URL + method,
-                    method="POST",
-                    data=data,
-                    params={"access_token": token, "v": self.API_VERSION},
+                    **request_kwargs,
                 )
-            logger.debug("Request {} with {} data returned {}", method, data, response)
+            logger.debug("Request {} with {} data returned {} (proxy: {})", method, data, response, self._current_proxy)
             yield await self.validate_response(method, data, response)  # type: ignore
 
     async def validate_response(
