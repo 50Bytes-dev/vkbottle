@@ -40,10 +40,10 @@ class VKAPIErrorResponseValidator(ABCResponseValidator):
         code = error.pop("error_code")
 
         if VKAPIError[code] is CaptchaError and ctx_api.captcha_handler:
-            success_token = await ctx_api.captcha_handler(CaptchaError(**error))  # type: ignore
+            key = await ctx_api.captcha_handler(CaptchaError(**error))  # type: ignore
             return await ctx_api.request(
                 method,
-                {**data, "captcha_sid": error["captcha_sid"], "captcha_key": success_token},
+                {**data, "captcha_sid": error["captcha_sid"], "captcha_key": key},
             )
 
         raise VKAPIError[code](**error)

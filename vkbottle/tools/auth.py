@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, List, Optional
 
+from vkbottle.api.api import CaptchaHandler
 from vkbottle.exception_factory import CaptchaError, VKAPIError
 from vkbottle.http import SingleAiohttpClient
 
@@ -43,6 +44,7 @@ class UserAuth:
             self.client_secret = MOBILE_APP_SECRET
 
         self.http_client = http_client or SingleAiohttpClient()
+        self.captcha_handler: Optional[CaptchaHandler] = None
 
     def _get_params(self, login: str, password: str) -> dict:
         return {
@@ -54,8 +56,9 @@ class UserAuth:
             "scope": 501202911,
         }
 
-    async def get_token(self, login: str, password: str) -> str:
+    async def get_token(self, login: str, password: str, **kwargs) -> str:
         params = self._get_params(login, password)
+        params.update(kwargs)
 
         response = await self.http_client.request_json(
             url=self.AUTH_URL,
@@ -67,5 +70,17 @@ class UserAuth:
             return response["access_token"]
         response["error_msg"] = response.pop("error")
         if response["error_msg"] == "need_captcha":
+            if self.captcha_handler:
+                key = await self.captcha_handler(CaptchaError(**response, request_params=[]))
+                return await self.get_token(
+                    login,
+                    password,
+                    captcha_sid=response["captcha_sid"],
+                    captcha_key=key,
+                )
             raise CaptchaError(**response, request_params=[])
         raise AuthError(**response, request_params=[])
+
+    def add_captcha_handler(self, handler: CaptchaHandler) -> CaptchaHandler:
+        self.captcha_handler = handler
+        return handler
